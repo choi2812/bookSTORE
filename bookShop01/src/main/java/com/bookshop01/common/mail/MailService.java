@@ -59,17 +59,9 @@ public class MailService {
     	String mailString = "";
     	OrderVO orderVO = (OrderVO) myOrderList.get(0);
     	
-    	to = orderer.getEmail1();
     	//정문이가 만듬 +손대면 너 손모가지도 날림 ㅇㅇ+
-    	/**
-    	 * create by choi
-    	 * 202020205
-    	 * in MemberVO
-    	 * out String
-    	 * 메일을 보내는 메일주소를 만들어 반환함
-    	 * **/
+    	to =find_Email(orderer.getEmail1(),orderer.getEmail2());
     	
-    	//to = "kimgipyung90@gmail.com";
     	subject = orderer.getMember_name() + "님 주문 내역입니다.";
     	
     	MimeMessage message = mailSender.createMimeMessage();
@@ -89,8 +81,30 @@ public class MailService {
     	}
     
     }
- 
-    private String setOrderInfo(String mailString, OrderVO orderVO) {
+    
+    /**
+	 * create by choi
+	 * 202020205
+	 * in MemberVO
+	 * out String
+	 * 메일을 보내는 메일주소를 만들어 반환함
+	 * 정문이가 만듬 +손대면 너 손모가지도 날려드릴 준비가 되있음 ㅇㅇ+
+	 * **/
+    private String find_Email(String email1, String email2) {
+    	String email="";
+		String[] emailSplit_result=email2.split(",");
+		if(emailSplit_result[1].equals("non")) {
+			email2=emailSplit_result[0];
+		}else {
+			email2=emailSplit_result[1];
+		}
+		
+		email=email1+"@"+email2;
+		
+		return email;
+	}
+
+	private String setOrderInfo(String mailString, OrderVO orderVO) {
 		String regEx = "_order_id";
 		Pattern pat = Pattern.compile(regEx);
 		
